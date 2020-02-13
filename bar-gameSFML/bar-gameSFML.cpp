@@ -4,7 +4,10 @@
 #include <iostream>
 #include <vector>
 #include "barClasses.h"
-#include <typeinfo>
+#include "Item.h"
+#include "Glass.h"
+#include "FillingMinigame.h"
+
 
 int main()
 {
@@ -13,20 +16,30 @@ int main()
 
     std::string spritePath = "resources/sprites/";
     
-    Spawner spiritSpawner(sf::Vector2<int>(200, 200), spritePath + "vodka.png", 0);
-    Spawner SodaSpawner(sf::Vector2<int>(300, 300), spritePath + "soda.jpg", 1);
-    Spawner oldFashionedSpawner(sf::Vector2<int>(400, 400), spritePath + "glass1.jpg", 2);
-    std::vector<Spawner> spawnerCollisions{ spiritSpawner, SodaSpawner, oldFashionedSpawner };
+    
+    ItemSpawner spiritSpawner(sf::Vector2<int>(200, 200), spritePath + "vodka.png", 0);
+    ItemSpawner SodaSpawner(sf::Vector2<int>(300, 300), spritePath + "soda.jpg", 1);
+    std::vector<ItemSpawner> itemSpawnerCollisions{ spiritSpawner, SodaSpawner };
+
+    GlassSpawner oldFashionedSpawner(sf::Vector2<int>(400, 400), spritePath + "glass1.jpg", 0);
+    std::vector<GlassSpawner> GlassSpawnerCollisions{ oldFashionedSpawner };
+
     Person person(sf::Vector2<int>(100,100));
     
     std::vector<Drawable> drawList{ spiritSpawner, SodaSpawner, oldFashionedSpawner, person};
     
  
-    Item* selected = NULL;
-    //std::vector<OldFashioned> glasses;
+    Item* itemSelected = NULL;
+    Glass* glassSelected = NULL;
+    FillingMiniGame* minigameActivated = NULL;
+    std::vector<Glass*> glasses;
+    
+    
+    
     
     sf::Event event;
     while (window.isOpen()) {
+        
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
@@ -34,31 +47,63 @@ int main()
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     
-                    for (Spawner x : spawnerCollisions) {
+                    for (ItemSpawner x : itemSpawnerCollisions) {
                         if (x.mouseCollision(sf::Mouse::getPosition(window))) {
-                            std::cout << "yipee" << std::endl;
-                            selected = x.spawn(sf::Mouse::getPosition(window));
                             
-                        }
+                            itemSelected = x.spawn(sf::Mouse::getPosition(window));
 
+                        }
                     }
                     
+                    for (GlassSpawner x : GlassSpawnerCollisions) {
+                        if (x.mouseCollision(sf::Mouse::getPosition(window))) {
+                            glassSelected = x.spawn(sf::Mouse::getPosition(window));
+                            glasses.push_back(glassSelected);
 
+                        }
+                    }
+
+                    if (!glasses.empty()) {
+                        
+                        for (Glass* x : glasses) {
+                            
+                            if (x->mouseCollision(sf::Mouse::getPosition(window))) {
+                                glassSelected = x;
+                            }
+                        }
+                        
+                    }
+                    
                 }
             }
             if (event.type == sf::Event::MouseButtonReleased) {
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    if (selected) {
-                        selected = NULL;
+                    if (itemSelected) {
+                        for (Glass* x : glasses) {
+                            
+                            if (x->mouseCollision(itemSelected->getPos())) {
+                                x->add(10, itemSelected);
+                                itemSelected = NULL;
+                                minigameActivated = new FillingMiniGame(sf::Mouse::getPosition());
+                            }
+                                                   
+                        }
+                        itemSelected = NULL;
                         
                     }
+                    if (glassSelected) {
+                        glassSelected = NULL;
+                    }
                 }
+                
 
             }
             if (event.type == sf::Event::MouseMoved){
-                if (selected) {
-                    selected->update(sf::Mouse::getPosition(window));
-                    //std::cout << sf::Mouse::getPosition(window).x << std::endl;
+                if (itemSelected) {
+                    itemSelected->update(sf::Mouse::getPosition(window));
+                }
+                if (glassSelected) {
+                    glassSelected->update(sf::Mouse::getPosition(window));
                 }
 
             }
@@ -68,10 +113,19 @@ int main()
         
         for (Drawable x : drawList) 
              x.draw(window);
-        
-        if (selected) {
-            selected->draw(window);
+        for (Glass* x : glasses) {
+            x->draw(window);
         }
+        if (itemSelected) {
+            itemSelected->draw(window);
+        }
+        if (minigameActivated) {
+            minigameActivated->draw(window);
+            if (minigameActivated->update()) {
+                minigameActivated = NULL;
+            }
+        }
+        
         window.display();
     }
 }

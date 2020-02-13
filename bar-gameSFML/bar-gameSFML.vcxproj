@@ -152,9 +152,15 @@
   <ItemGroup>
     <ClCompile Include="bar-gameSFML.cpp" />
     <ClCompile Include="barClasses.cpp" />
+    <ClCompile Include="FillingMinigame.cpp" />
+    <ClCompile Include="Glass.cpp" />
+    <ClCompile Include="Item.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="barClasses.h" />
+    <ClInclude Include="FillingMinigame.h" />
+    <ClInclude Include="Glass.h" />
+    <ClInclude Include="Item.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
