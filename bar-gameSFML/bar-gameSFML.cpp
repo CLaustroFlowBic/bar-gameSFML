@@ -80,11 +80,11 @@ int main()
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     if (itemSelected) {
                         for (Glass* x : glasses) {
-                            
+
                             if (x->mouseCollision(itemSelected->getPos())) {
                                 x->add(10, itemSelected);
-                                itemSelected = NULL;
                                 minigameActivated = new FillingMiniGame(sf::Mouse::getPosition());
+                                //itemSelected = NULL;
                             }
                                                    
                         }
