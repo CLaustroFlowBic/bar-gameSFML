@@ -2,14 +2,17 @@
 #include <iostream>
 
 
-Glass::Glass(sf::Vector2<int> pos) {
+Glass::Glass(sf::Vector2<int> pos, int _id) {
 	sprite.setPosition(pos.x - sprite.getGlobalBounds().width / 2, pos.y - sprite.getGlobalBounds().height / 2);
+	id = _id;
 }
+
 void Glass::update(sf::Vector2<int> pos) {
 
 	sprite.setPosition(pos.x - sprite.getGlobalBounds().width / 2, pos.y - sprite.getGlobalBounds().height / 2);
 
 }
+
 bool Glass::mouseCollision(sf::Vector2<int> pos) {
 	if (sprite.getGlobalBounds().contains(pos.x, pos.y)) {
 		return true;
@@ -30,18 +33,17 @@ void Glass::add(int amount, Item* item) {
 	}
 	for (auto elem : contains)
 	{
-		std::cout << elem.first << " " << elem.second << "\n";
+		std::cout << id << " " << elem.first << " " << elem.second << "\n";
 	}
 }
 
 //GLASS OBJECT fUNCTIONS
-OldFashioned::OldFashioned(sf::Vector2<int> pos) : Glass(pos) {
+OldFashioned::OldFashioned(sf::Vector2<int> pos, int _id) : Glass(pos, _id) {
 	std::cout << "hello:" << std::endl;
 	image.loadFromFile("resources/sprites/glass1.jpg");
 	sprite.setTexture(image);
 	sprite.setPosition(pos.x - sprite.getGlobalBounds().width / 2, pos.y - sprite.getGlobalBounds().height / 2);
 }
-
 
 //GLASSSPAWNER FUNCTIONS
 
@@ -60,6 +62,5 @@ bool GlassSpawner::mouseCollision(sf::Vector2<int> pos) {
 	else
 		return false;
 }
-
 
 Glass* GlassSpawner::g_prototypes[] = { new OldFashioned };
