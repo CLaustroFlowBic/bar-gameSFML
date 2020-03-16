@@ -16,7 +16,7 @@ class Glass : public Drawable{
 	int maxCapacity;
 	int currentCapacity;
 	std::map<std::string, int> contains;
-	int id;
+	
 
 public:
 	Glass() {};
@@ -27,6 +27,7 @@ public:
 	void add(int amount, Item* item);
 	void update(sf::Vector2<int> pos);
 	virtual Glass* clone(sf::Vector2<int> pos, int id) = 0;
+	int id;
 
 };
 

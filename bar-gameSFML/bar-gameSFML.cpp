@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <list>
 
 #include "barClasses.h"
 #include "Item.h"
@@ -34,10 +36,10 @@ int main()
     Item* itemSelected = NULL;
     Glass* glassSelected = NULL;
     FillingMiniGame* minigameActivated = NULL;
-    std::vector<Glass*> glasses;
+    std::list<Glass*> glasses;
     
     int glassid = 0;
-    
+    bool collision = false;
     
     sf::Event event;
     while (window.isOpen()) {
@@ -60,18 +62,38 @@ int main()
                     for (GlassSpawner x : GlassSpawnerCollisions) {
                         if (x.mouseCollision(sf::Mouse::getPosition(window))) {
                             glassSelected = x.spawn(sf::Mouse::getPosition(window), glassid);
-                            glasses.push_back(glassSelected);
+                            glasses.insert(glasses.begin(), glassSelected);
                             glassid++;
 
                         }
                     }
-
+                    
                     if (!glasses.empty()) {
-                        for (Glass* x : glasses) {   
-                            if (x->mouseCollision(sf::Mouse::getPosition(window))) {
-                                glassSelected = x;
+                        
+                        std::list<Glass*>::iterator y = glasses.begin();;
+                        for (auto x{ glasses.begin() }; x != glasses.end(); ++x) {
+                            if ((*x)->mouseCollision(sf::Mouse::getPosition(window))) {
+
+                               
+                                if (x != glasses.begin()) {
+                                    y = x;
+                                    collision = true;
+                                }
+                                
                             }
+
+                            
                         }
+                        if (collision) {
+                            Glass* temp = *y;
+                            glasses.erase(y);
+                            glasses.push_front(temp);
+                            glassSelected = *(glasses.begin());
+                            collision = false;
+                        }
+                        
+                       
+                        
                     }
                 }
             }
@@ -83,6 +105,7 @@ int main()
                             if (x->mouseCollision(itemSelected->getPos())) {
                                 x->add(10, itemSelected);
                                 minigameActivated = new FillingMiniGame(sf::Mouse::getPosition());
+                                free(itemSelected);
                                 //itemSelected = NULL;
                             }
                                                    
@@ -112,9 +135,18 @@ int main()
         for (Drawable x : drawList) {
             x.draw(window);
         }
-        for (Glass* x : glasses) {
+        /*for (Glass* x : glasses) {
             x->draw(window);
+        }*/
+
+        
+        for (auto p{ glasses.rbegin() }; p != glasses.rend(); ++p) {
+            //std::cout << (*p)->id << ",";
+            (*p)->draw(window);
         }
+        std::cout << std::endl;
+
+
         if (itemSelected) {
             itemSelected->draw(window);
         }

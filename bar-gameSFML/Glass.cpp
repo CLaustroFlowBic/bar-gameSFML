@@ -31,10 +31,13 @@ void Glass::add(int amount, Item* item) {
 	else {
 		it->second += amount;
 	}
+
+	std::cout << "glass id: " << id << " " << "contents: ";
 	for (auto elem : contains)
 	{
-		std::cout << id << " " << elem.first << " " << elem.second << "\n";
+		 std::cout << elem.first << " " << elem.second << " ";
 	}
+	std::cout << std::endl;
 }
 
 //GLASS OBJECT fUNCTIONS
