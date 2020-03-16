@@ -14,6 +14,12 @@
 
 //main file for this project
 
+typedef struct {
+    bool focusedCollision;
+    bool unfocusedCollision;
+} GlassCollisionState;
+
+
 int main()
 {
     
@@ -39,8 +45,11 @@ int main()
     std::list<Glass*> glasses;
     
     int glassid = 0;
-    bool collision = false;
-    
+    GlassCollisionState glassCollisionState;
+    glassCollisionState.focusedCollision = false;
+    glassCollisionState.unfocusedCollision = false;
+
+
     sf::Event event;
     while (window.isOpen()) {
         
@@ -69,31 +78,30 @@ int main()
                     }
                     
                     if (!glasses.empty()) {
-                        
+                        //collison layering logic for glasses
                         std::list<Glass*>::iterator y = glasses.begin();;
                         for (auto x{ glasses.begin() }; x != glasses.end(); ++x) {
                             if ((*x)->mouseCollision(sf::Mouse::getPosition(window))) {
-
-                               
                                 if (x != glasses.begin()) {
                                     y = x;
-                                    collision = true;
+                                    glassCollisionState.unfocusedCollision = true;
                                 }
-                                
+                                else {
+                                    glassCollisionState.focusedCollision = true;
+                                }
                             }
-
-                            
                         }
-                        if (collision) {
+                        if (glassCollisionState.unfocusedCollision) {
                             Glass* temp = *y;
                             glasses.erase(y);
                             glasses.push_front(temp);
                             glassSelected = *(glasses.begin());
-                            collision = false;
+                            glassCollisionState.unfocusedCollision = false;
                         }
-                        
-                       
-                        
+                        if (glassCollisionState.focusedCollision) {
+                            glassSelected = *(glasses.begin());
+                            glassCollisionState.focusedCollision = false;
+                        }
                     }
                 }
             }
