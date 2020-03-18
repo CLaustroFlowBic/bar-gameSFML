@@ -59,49 +59,57 @@ int main()
             }
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    
-                    
-                    for (ItemSpawner x : itemSpawnerCollisions) {
-                        if (x.mouseCollision(sf::Mouse::getPosition(window))) {  
-                            itemSelected = x.spawn(sf::Mouse::getPosition(window));
-                        }
-                    }
-                    
-                    //might be able to get rid of this
-                    for (GlassSpawner x : GlassSpawnerCollisions) {
-                        if (x.mouseCollision(sf::Mouse::getPosition(window))) {
-                            glassSelected = x.spawn(sf::Mouse::getPosition(window), glassid);
-                            glasses.insert(glasses.begin(), glassSelected);
-                            glassid++;
+                    if (!minigameActivated) {
 
-                        }
-                    }
                     
-                    if (!glasses.empty()) {
-                        //collison layering logic for glasses
-                        std::list<Glass*>::iterator y = glasses.begin();;
-                        for (auto x{ glasses.begin() }; x != glasses.end(); ++x) {
-                            if ((*x)->mouseCollision(sf::Mouse::getPosition(window))) {
-                                if (x != glasses.begin()) {
-                                    y = x;
-                                    glassCollisionState.unfocusedCollision = true;
-                                }
-                                else {
-                                    glassCollisionState.focusedCollision = true;
-                                }
+                        for (ItemSpawner x : itemSpawnerCollisions) {
+                            if (x.mouseCollision(sf::Mouse::getPosition(window))) {
+                                itemSelected = x.spawn(sf::Mouse::getPosition(window));
                             }
                         }
-                        if (glassCollisionState.unfocusedCollision) {
-                            Glass* temp = *y;
-                            glasses.erase(y);
-                            glasses.push_front(temp);
-                            glassSelected = *(glasses.begin());
-                            glassCollisionState.unfocusedCollision = false;
+
+                        //might be able to get rid of this
+                        for (GlassSpawner x : GlassSpawnerCollisions) {
+                            if (x.mouseCollision(sf::Mouse::getPosition(window))) {
+                                glassSelected = x.spawn(sf::Mouse::getPosition(window), glassid);
+                                glasses.insert(glasses.begin(), glassSelected);
+                                glassid++;
+
+                            }
                         }
-                        if (glassCollisionState.focusedCollision) {
-                            glassSelected = *(glasses.begin());
-                            glassCollisionState.focusedCollision = false;
+
+                        if (!glasses.empty()) {
+                            //collison layering logic for glasses
+                            //TODO: refactoring
+                            std::list<Glass*>::iterator y = glasses.begin();
+                            for (auto x{ glasses.begin() }; x != glasses.end(); ++x) {
+                                if ((*x)->mouseCollision(sf::Mouse::getPosition(window))) {
+                                    if (x != glasses.begin()) {
+                                        y = x;
+                                        glassCollisionState.unfocusedCollision = true;
+                                    }
+                                    else {
+                                        glassCollisionState.focusedCollision = true;
+                                    }
+                                }
+                            }
+                            if (glassCollisionState.unfocusedCollision) {
+                                Glass* temp = *y;
+                                glasses.erase(y);
+                                glasses.push_front(temp);
+                                glassSelected = *(glasses.begin());
+                                glassCollisionState.unfocusedCollision = false;
+                            }
+                            if (glassCollisionState.focusedCollision) {
+                                glassSelected = *(glasses.begin());
+                                glassCollisionState.focusedCollision = false;
+                            }
                         }
+                        
+                    }
+                    else {
+                        minigameActivated->pressed();
+
                     }
                 }
             }
@@ -112,7 +120,7 @@ int main()
                             
                             if (x->mouseCollision(itemSelected->getPos())) {
                                 x->add(10, itemSelected);
-                                minigameActivated = new FillingMiniGame(sf::Mouse::getPosition());
+                                minigameActivated = new FillingMiniGame(sf::Mouse::getPosition(), 0.1f);
                                 free(itemSelected);
                                 //itemSelected = NULL;
                             }
@@ -122,6 +130,10 @@ int main()
                         
                     }
                     if (glassSelected) {
+                        if (person.isColliding(glassSelected->getPos().x, glassSelected->getPos().y)) {
+                            std::cout << "removed Glass" << std::endl;
+                            glasses.remove(glassSelected);
+                        }
                         glassSelected = NULL;
                     }
                 }
@@ -152,15 +164,21 @@ int main()
             //std::cout << (*p)->id << ",";
             (*p)->draw(window);
         }
-        std::cout << std::endl;
+        
 
 
         if (itemSelected) {
             itemSelected->draw(window);
         }
+
+        //todo: implement actually working minigame dickhead
         if (minigameActivated) {
+            window.setMouseCursorVisible(false);
+
             minigameActivated->draw(window);
+            
             if (minigameActivated->update()) {
+                window.setMouseCursorVisible(true);
                 minigameActivated = NULL;
             }
         }

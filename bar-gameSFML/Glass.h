@@ -24,6 +24,7 @@ public:
 	int getMaxCapacity() { return maxCapacity; }
 	int getCurrentCapacity() { return currentCapacity; }
 	bool mouseCollision(sf::Vector2<int> pos);
+	sf::Vector2f getPos();
 	void add(int amount, Item* item);
 	void update(sf::Vector2<int> pos);
 	virtual Glass* clone(sf::Vector2<int> pos, int id) = 0;

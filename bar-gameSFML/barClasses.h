@@ -27,6 +27,7 @@ class Person : public Drawable {
 
 public:
 	Person(sf::Vector2<int> pos);
+	bool isColliding(int x, int y);
 };
 
 

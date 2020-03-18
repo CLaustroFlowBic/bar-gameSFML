@@ -1,7 +1,8 @@
 #include "FillingMinigame.h"
+#include <iostream>
+#include <cmath>
 
-
-FillingMiniGame::FillingMiniGame(sf::Vector2<int> pos) {
+FillingMiniGame::FillingMiniGame(sf::Vector2<int> pos, float _speed) {
 
 	border = sf::RectangleShape(sf::Vector2f(100,200));
 	cursor = sf::RectangleShape(sf::Vector2f(border.getGlobalBounds().width, 5));
@@ -11,12 +12,12 @@ FillingMiniGame::FillingMiniGame(sf::Vector2<int> pos) {
 
 	cursor.setFillColor(sf::Color(255, 0, 0));
 
-	border.setPosition(pos.x - 200, pos.y - 250);
+	border.setPosition(pos.x - 275, pos.y - 400);
 
 	cursor.setPosition(border.getPosition().x, 
 					   border.getPosition().y + border.getGlobalBounds().height - cursor.getGlobalBounds().height);
-	
-
+	activated = true;
+	speed = _speed;
 }
 
 void FillingMiniGame::draw(sf::RenderWindow &window) {
@@ -24,12 +25,26 @@ void FillingMiniGame::draw(sf::RenderWindow &window) {
 	window.draw(cursor);
 }
 
+void FillingMiniGame::pressed() {
+	activated = false;
+	
+}
+
 bool FillingMiniGame::update() {
-	cursor.setPosition(cursor.getPosition().x, cursor.getPosition().y - 1);
-	if (cursor.getPosition().y >= border.getPosition().y) {
-		return false;
+	cursor.setPosition(cursor.getPosition().x, cursor.getPosition().y - log10(speed)) ;
+	speed += 0.10f;
+	//std::cout << log(speed) << std::endl;
+	if (cursor.getPosition().y <= border.getPosition().y) {
+		
+		return true;
+	}
+	else if(activated == false) {
+		
+		return true;
+		
 	}
 	else {
-		return true;
+		
+		return false;
 	}
 }

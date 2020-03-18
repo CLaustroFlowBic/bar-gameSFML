@@ -18,3 +18,14 @@ Person::Person(sf::Vector2<int> pos) : Drawable(pos) {
 	
 }
 
+bool Person::isColliding(int x, int y) {
+
+	if (sprite.getGlobalBounds().contains(x, y)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+
+}
+
