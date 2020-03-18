@@ -49,7 +49,7 @@ void Glass::add(int amount, Item* item) {
 //GLASS OBJECT fUNCTIONS
 OldFashioned::OldFashioned(sf::Vector2<int> pos, int _id) : Glass(pos, _id) {
 	std::cout << "OldFashioned Created" << std::endl;
-	image.loadFromFile("resources/sprites/glass1.jpg");
+	image.loadFromFile("resources/sprites/rocks_empty.png");
 	sprite.setTexture(image);
 	sprite.setPosition(pos.x - sprite.getGlobalBounds().width / 2, pos.y - sprite.getGlobalBounds().height / 2);
 }

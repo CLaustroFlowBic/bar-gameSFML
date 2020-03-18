@@ -6,9 +6,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Vector2.hpp>
 
-
-
-
 class Drawable {
 
 public:
@@ -28,6 +25,16 @@ class Person : public Drawable {
 public:
 	Person(sf::Vector2<int> pos);
 	bool isColliding(int x, int y);
+};
+
+class PersonSpawner : public Drawable {
+
+private:
+	
+
+public:
+	PersonSpawner();
+	
 };
 
 

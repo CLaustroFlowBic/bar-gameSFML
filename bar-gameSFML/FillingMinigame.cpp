@@ -30,6 +30,16 @@ void FillingMiniGame::pressed() {
 	
 }
 
+int FillingMiniGame::getAmountFilled() {
+	//(cursor.getPosition().y < (border.getPosition().y + border.getGlobalBounds().height)
+	float calc = cursor.getPosition().y - (border.getPosition().y + border.getGlobalBounds().height);
+	calc = calc /  border.getGlobalBounds().height;
+	std::cout << calc << std::endl;
+	calc = calc * 100.0f;
+	
+	return abs(calc);
+}
+
 bool FillingMiniGame::update() {
 	cursor.setPosition(cursor.getPosition().x, cursor.getPosition().y - log10(speed)) ;
 	speed += 0.10f;

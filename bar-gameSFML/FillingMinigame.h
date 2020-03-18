@@ -10,6 +10,7 @@ class FillingMiniGame  {
 public:
 	FillingMiniGame(sf::Vector2<int> pos, float _speed);
 	void draw(sf::RenderWindow &window);
+	int getAmountFilled();
 	bool update();
 	void pressed();
 };

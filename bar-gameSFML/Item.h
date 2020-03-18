@@ -19,7 +19,6 @@ public:
 	sf::Vector2<int> getPos();
 	virtual std::string getName() = 0;
 
-
 };
 
 //Spirit Item Object
@@ -42,7 +41,6 @@ public:
 	Item* clone(sf::Vector2<int> pos) { return new Soda(pos); }
 	std::string getName() { return name; };
 
-
 };
 
 
@@ -56,7 +54,6 @@ public:
 		image.loadFromFile(spritePath);
 		sprite.setTexture(image);
 		choice = _choice;
-
 	}
 	bool mouseCollision(sf::Vector2<int> pos) {
 		if (sprite.getGlobalBounds().contains(pos.x, pos.y)) {
