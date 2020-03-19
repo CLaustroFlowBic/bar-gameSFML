@@ -26,17 +26,19 @@ int main()
 
     std::string spritePath = "resources/sprites/";
     
-    ItemSpawner spiritSpawner(sf::Vector2<int>(200, 300), spritePath + "vodka.png", 0);
-    ItemSpawner SodaSpawner(sf::Vector2<int>(300, 300), spritePath + "soda.jpg", 1);
-    ItemSpawner darkRum(sf::Vector2<int>(400, 300), spritePath + "darkrum.png", 2);
-    std::vector<ItemSpawner> itemSpawnerCollisions{ spiritSpawner, SodaSpawner, darkRum };
+    ItemSpawner spiritSpawner(sf::Vector2<int>(200, 300), spritePath + "vodka.png", "vodka");
+    ItemSpawner SodaSpawner(sf::Vector2<int>(300, 300), spritePath + "soda.jpg", "soda");
+    ItemSpawner darkRum(sf::Vector2<int>(400, 300), spritePath + "darkrum.png", "darkrum");
+    ItemSpawner gin(sf::Vector2<int>(500, 300), spritePath + "gin.png", "gin");
+    std::vector<ItemSpawner> itemSpawnerCollisions{ spiritSpawner, SodaSpawner, darkRum, gin };
+
 
     GlassSpawner oldFashionedSpawner(sf::Vector2<int>(600, 385), spritePath + "rocks_empty.png", 0);
     std::vector<GlassSpawner> GlassSpawnerCollisions{ oldFashionedSpawner };
 
     Person person(sf::Vector2<int>(590,100));
     
-    std::vector<Drawable> drawList{ spiritSpawner, SodaSpawner, oldFashionedSpawner, person};
+    std::vector<Drawable> drawList{ spiritSpawner, SodaSpawner, oldFashionedSpawner, person, darkRum, gin };
     
  
     Item* itemSelected = NULL;
