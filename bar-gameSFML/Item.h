@@ -7,10 +7,11 @@
 #include <SFML/System/Vector2.hpp>
 #include "barClasses.h"
 
-const int numberOfItems = 2;
+const int numberOfItems = 3;
 
 //Base class for Item Objects
 class Item : public Drawable {
+	std::string name;
 public:
 	Item() {};
 	Item(sf::Vector2<int> pos);
@@ -36,7 +37,6 @@ class Soda : public Item {
 	std::string name = "soda";
 public:
 	Soda() {};
-	~Soda() {};
 	Soda(sf::Vector2<int> pos);
 	Item* clone(sf::Vector2<int> pos) { return new Soda(pos); }
 	std::string getName() { return name; };

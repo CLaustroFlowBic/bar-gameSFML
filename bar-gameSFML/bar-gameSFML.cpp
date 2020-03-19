@@ -28,9 +28,10 @@ int main()
     
     ItemSpawner spiritSpawner(sf::Vector2<int>(200, 300), spritePath + "vodka.png", 0);
     ItemSpawner SodaSpawner(sf::Vector2<int>(300, 300), spritePath + "soda.jpg", 1);
-    std::vector<ItemSpawner> itemSpawnerCollisions{ spiritSpawner, SodaSpawner };
+    ItemSpawner darkRum(sf::Vector2<int>(400, 300), spritePath + "darkrum.png", 2);
+    std::vector<ItemSpawner> itemSpawnerCollisions{ spiritSpawner, SodaSpawner, darkRum };
 
-    GlassSpawner oldFashionedSpawner(sf::Vector2<int>(400, 385), spritePath + "rocks_empty.png", 0);
+    GlassSpawner oldFashionedSpawner(sf::Vector2<int>(600, 385), spritePath + "rocks_empty.png", 0);
     std::vector<GlassSpawner> GlassSpawnerCollisions{ oldFashionedSpawner };
 
     Person person(sf::Vector2<int>(590,100));
