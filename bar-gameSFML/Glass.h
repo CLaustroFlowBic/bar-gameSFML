@@ -23,7 +23,9 @@ public:
 	Glass(sf::Vector2<int> pos, int _id);
 	int getMaxCapacity() { return maxCapacity; }
 	int getCurrentCapacity() { return currentCapacity; }
+	std::map<std::string, int> getContents() { return contains; };
 	bool mouseCollision(sf::Vector2<int> pos);
+
 	sf::Vector2f getPos();
 	void add(int amount, Item* item);
 	void update(sf::Vector2<int> pos);

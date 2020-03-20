@@ -20,24 +20,21 @@ protected:
 	sf::Vector2<int> position;
 };
 
+
+
+
 class Person : public Drawable {
-
+	std::map<std::string, int> order;
+	std::string promptString;
+	sf::Font font;
+	sf::Text prompt;
 public:
-	Person(sf::Vector2<int> pos);
+	Person(sf::Vector2<int> pos, std::map<std::string, int> _order);
 	bool isColliding(int x, int y);
+	bool orderChecker(std::map<std::string, int> drink);
+	std::string getOrder();
+	void draw(sf::RenderWindow& window);
 };
-
-class PersonSpawner : public Drawable {
-
-private:
-	
-
-public:
-	PersonSpawner();
-	
-};
-
-
 
 
 

@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <list>
+#include <time.h>
 
 #include "barClasses.h"
 #include "Item.h"
@@ -19,6 +20,25 @@ typedef struct {
     bool unfocusedCollision;
 } GlassCollisionState;
 
+std::string genOrder(int selection, int& amount) {
+
+    switch (selection) {
+    case 0:
+        amount = 50;
+        return "vodka";
+    case 1:
+        amount = 50;
+        return "gin";
+    case 2:
+        amount = 50;
+        return "darkrum";
+    case 3:
+        amount = 50;
+        return "soda";
+    }
+    return "";
+}
+
 
 int main()
 {
@@ -32,13 +52,32 @@ int main()
     ItemSpawner gin(sf::Vector2<int>(500, 300), spritePath + "gin.png", "gin");
     std::vector<ItemSpawner> itemSpawnerCollisions{ spiritSpawner, SodaSpawner, darkRum, gin };
 
-
+    
     GlassSpawner oldFashionedSpawner(sf::Vector2<int>(600, 385), spritePath + "rocks_empty.png", 0);
     std::vector<GlassSpawner> GlassSpawnerCollisions{ oldFashionedSpawner };
 
-    Person person(sf::Vector2<int>(590,100));
+
+    srand(time(NULL));
+    std::list<Person> personStack;
+    for (int i = 0; i < 20; ++i) {
+        int amount1 = 0;
+        std::string drink1 = genOrder(rand() % 4, amount1);
+        int amount2 = 0;
+        std::string drink2 = genOrder(rand() % 4, amount2);
+        std::map<std::string, int> temp;
+
+        temp.insert(std::pair<std::string, int>(drink1, amount1));
+        temp.insert(std::pair<std::string, int>(drink2, amount2));
+
+        Person *person = new Person(sf::Vector2<int>(590, 100),  temp);
+        personStack.push_back((*person));
+        temp.clear();
+        std::cout << person << std::endl;
+        //std::cout << &personStack.front() << std::endl;
+    }
     
-    std::vector<Drawable> drawList{ spiritSpawner, SodaSpawner, oldFashionedSpawner, person, darkRum, gin };
+    
+    std::vector<Drawable> drawList{ spiritSpawner, SodaSpawner, oldFashionedSpawner, darkRum, gin };
     
  
     Item* itemSelected = NULL;
@@ -137,9 +176,14 @@ int main()
                         
                     }
                     if (glassSelected) {
-                        if (person.isColliding(glassSelected->getPos().x, glassSelected->getPos().y)) {
+                        if (personStack.front().isColliding(glassSelected->getPos().x, glassSelected->getPos().y)) {
                             std::cout << "removed Glass" << std::endl;
+                            std::cout << personStack.front().getOrder() << std::endl;
                             glasses.remove(glassSelected);
+                            if (personStack.front().orderChecker(glassSelected->getContents())) {
+                                personStack.pop_front();
+                            }
+                            
                         }
                         glassSelected = NULL;
                     }
@@ -157,19 +201,19 @@ int main()
 
             }
         }
-        window.clear();
 
-        
+
+        window.clear();
+        personStack.front().draw(window);
         for (Drawable x : drawList) {
             x.draw(window);
         }
-        
-
         
         for (auto p{ glasses.rbegin() }; p != glasses.rend(); ++p) {
             //std::cout << (*p)->id << ",";
             (*p)->draw(window);
         }
+        
         
 
 
