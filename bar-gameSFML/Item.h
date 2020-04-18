@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Vector2.hpp>
 #include "barClasses.h"
+#include <vector>
 
 
 //Base class for Item Objects
@@ -18,38 +19,18 @@ public:
 	void update(sf::Vector2<int> pos);
 	sf::Vector2<int> getPos();
 	std::string getName() { return name; };
+	void setPos(sf::Vector2<int> pos);
+	sf::Sprite getSprite() { return sprite; };
 
 };
-
-////Spirit Item Object
-//class Spirit : public Item {
-//	std::string name = "spirit";
-//public:
-//	Spirit() {};
-//	Spirit(sf::Vector2<int> pos);
-//	Item* clone(sf::Vector2<int> pos) { return new Spirit(pos); }
-//	std::string getName() { return name; };
-//};
-//
-////Soda Item Objects
-//class Soda : public Item {
-//	std::string name = "soda";
-//public:
-//	Soda() {};
-//	Soda(sf::Vector2<int> pos);
-//	Item* clone(sf::Vector2<int> pos) { return new Soda(pos); }
-//	std::string getName() { return name; };
-//
-//};
-
-
 class ItemSpawner : public Drawable {
 private:
-	
+
 	int choice;
 	std::string spritePath;
 	std::string name;
 public:
+	//move this to cpp
 	ItemSpawner(sf::Vector2<int> pos, std::string _spritePath, std::string _name) : Drawable(pos) {
 		spritePath = _spritePath;
 		name = _name;
@@ -57,6 +38,7 @@ public:
 		sprite.setTexture(image);
 		//choice = _choice;
 	}
+	//move this to cpp
 	bool mouseCollision(sf::Vector2<int> pos) {
 		if (sprite.getGlobalBounds().contains(pos.x, pos.y)) {
 			return true;
@@ -69,6 +51,10 @@ public:
 
 		return new Item(pos, name, spritePath);
 	};
+	sf::Sprite getSprite() { return sprite; };
 };
+
+
+
 
 #endif

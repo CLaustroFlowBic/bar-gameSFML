@@ -22,7 +22,6 @@ sf::Vector2f Glass::getPos() {
 bool Glass::mouseCollision(sf::Vector2<int> pos) {
 	if (sprite.getGlobalBounds().contains(pos.x, pos.y)) {
 		return true;
-
 	}
 	else
 		return false;

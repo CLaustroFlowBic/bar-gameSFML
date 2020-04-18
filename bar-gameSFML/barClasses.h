@@ -21,13 +21,18 @@ protected:
 };
 
 
-
-
 class Person : public Drawable {
 	std::map<std::string, int> order;
 	std::string promptString;
 	sf::Font font;
 	sf::Text prompt;
+
+	sf::RectangleShape textbox;
+
+	int textSpeed;
+	int textPosition;
+
+
 public:
 	Person(sf::Vector2<int> pos, std::map<std::string, int> _order);
 	bool isColliding(int x, int y);

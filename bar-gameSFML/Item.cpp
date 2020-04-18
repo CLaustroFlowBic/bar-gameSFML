@@ -1,6 +1,7 @@
 
 #include "Item.h"
 
+
 Item::Item(sf::Vector2<int> pos, std::string _name, std::string spritePath) {
 	image.loadFromFile(spritePath);
 	sprite.setTexture(image);
@@ -16,6 +17,8 @@ sf::Vector2<int> Item::getPos() {
 	return sf::Vector2<int>(sprite.getPosition().x, sprite.getPosition().y);
 }
 
-
+void Item::setPos(sf::Vector2<int> pos) {
+	sprite.setPosition(pos.x, pos.y);
+}
 
 

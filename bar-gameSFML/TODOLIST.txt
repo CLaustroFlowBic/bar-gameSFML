@@ -1,0 +1,24 @@
+TODO LIST BARGAME alpha 0.01
+ordered in list of importance
+
+
+
+
++flesh out minigame, make it so the numbers matter
++add menu screens state machine thing
++refactoring/commenting/fix upstyle
++move person into person file
+
+-make a soda gun ( fixed by utilsing existing item and overlaying a soda gun image )
+-make bar/seperate people from bar and stuff
+
+??fix minigame timestep issues
+
+ALPHA VERSION 0.02
+
+++work out with jack how to do filling up the glass animation
+
+
+
+
+

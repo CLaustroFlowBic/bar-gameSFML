@@ -2,20 +2,46 @@
 #include <iostream>
 #include <cmath>
 
+
+sf::RectangleShape makeLine(sf::RectangleShape border, int height) {
+
+	sf::RectangleShape level;
+
+	level = sf::RectangleShape(sf::Vector2f(border.getGlobalBounds().width - 10, 5));
+	
+	level.setFillColor(sf::Color(50, 0, 255));
+
+	level.setPosition(border.getPosition().x, height);
+	
+	return level;
+
+}
+
+
 FillingMiniGame::FillingMiniGame(sf::Vector2<int> pos, float _speed) {
 
-	border = sf::RectangleShape(sf::Vector2f(100,200));
+	border = sf::RectangleShape(sf::Vector2f(100,260));
 	cursor = sf::RectangleShape(sf::Vector2f(border.getGlobalBounds().width, 5));
 	border.setFillColor(sf::Color(0, 0, 0));
-	border.setOutlineThickness(2);
+	border.setOutlineThickness(5);
 	border.setOutlineColor(sf::Color(250, 150, 100));
 
 	cursor.setFillColor(sf::Color(255, 0, 0));
 
 	border.setPosition(pos.x - 275, pos.y - 400);
+	position = border.getPosition().y + border.getGlobalBounds().height - cursor.getGlobalBounds().height;
+	cursor.setPosition(border.getPosition().x, position);
 
-	cursor.setPosition(border.getPosition().x, 
-					   border.getPosition().y + border.getGlobalBounds().height - cursor.getGlobalBounds().height);
+
+	int spacing = 55;
+	int height = position - spacing;
+	for (int i = 0; i < 4; ++i) {
+		
+		levels[i] = makeLine(border, height);
+		height -= spacing;
+		
+	}
+	
 	activated = true;
 	speed = _speed;
 }
@@ -23,6 +49,12 @@ FillingMiniGame::FillingMiniGame(sf::Vector2<int> pos, float _speed) {
 void FillingMiniGame::draw(sf::RenderWindow &window) {
 	window.draw(border);
 	window.draw(cursor);
+
+	for (auto x : levels) {
+		window.draw(x);
+	}
+
+	window.draw(levels[0]);
 }
 
 void FillingMiniGame::pressed() {
@@ -40,9 +72,17 @@ int FillingMiniGame::getAmountFilled() {
 	return abs(calc);
 }
 
-bool FillingMiniGame::update() {
-	cursor.setPosition(cursor.getPosition().x, cursor.getPosition().y - log10(speed)) ;
-	speed += 0.10f;
+bool FillingMiniGame::update(float dt) {
+	position = position - log2(speed * dt);
+	std::cout << "Position" << " " <<  log2(speed * dt) << std::endl;
+	speed += 10;
+	//std::cout << "speed = " << speed << std::endl;
+	//std::cout << "dt = " << dt << std::endl;
+	//
+	//std::cout << "log2: " <<  log10(speed * dt) << std::endl;
+	cursor.setPosition(cursor.getPosition().x, position ) ;
+	//- log10(speed)
+	//speed += 0.10f;
 	//std::cout << log(speed) << std::endl;
 	if (cursor.getPosition().y <= border.getPosition().y) {
 		

@@ -15,19 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bar-gameSFML.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="barClasses.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
+    <ClCompile Include="FillingMinigame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Glass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FillingMinigame.cpp">
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,14 +35,19 @@
     <ClInclude Include="barClasses.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
+    <ClInclude Include="FillingMinigame.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Glass.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="FillingMinigame.h">
+    <ClInclude Include="Item.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="TODOLIST.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
